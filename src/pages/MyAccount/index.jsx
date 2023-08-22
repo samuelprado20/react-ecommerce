@@ -1,7 +1,9 @@
+import Layout from '../../Components/Layout'
+
 export default function MyAccount () {
   return (
-    <div>
+    <Layout>
       MyAccound
-    </div>
+    </Layout>
   )
 }

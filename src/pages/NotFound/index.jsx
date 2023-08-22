@@ -1,7 +1,9 @@
+import Layout from '../../Components/Layout'
+
 export default function NotFound () {
   return (
-    <div>
+    <Layout>
       NotFound
-    </div>
+    </Layout>
   )
 }
