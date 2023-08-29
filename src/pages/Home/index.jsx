@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
+import { API_URL } from '../../utils/api.js'
 import Layout from '../../Components/Layout'
 import Card from '../../Components/Card'
-import { API_URL } from '../../utils/api.js'
+import ProductDetail from '../../Components/ProductDetail'
 
 export default function Home () {
   const [items, setItems] = useState(null)
@@ -11,7 +12,6 @@ export default function Home () {
       .then(res => res.json())
       .then(data => {
         setItems(data)
-        // return console.log(data)
       })
   }, [])
   return (
@@ -25,6 +25,7 @@ export default function Home () {
           />
         ))}
       </div>
+      <ProductDetail />
     </Layout>
   )
 }
