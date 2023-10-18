@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react'
+import { createContext, useState, useEffect } from 'react'
+import { API_URL } from '../utils/api'
 
 export const ShoppingCartContext = createContext()
 
@@ -29,6 +30,30 @@ export const ShoppingCartProvider = ({ children }) => {
   // Shopping cart - order
   const [order, setOrder] = useState([])
 
+  // get products
+  const [items, setItems] = useState(null)
+
+  useEffect(() => {
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        setItems(data)
+      })
+  }, [])
+
+  // Get products by title
+  const [searchByTitle, setSearchByTitle] = useState('')
+
+  // Filtered items - search
+  const [filteredItems, setFilteredItems] = useState(null)
+  const filterItemsByTitle = (items, search) => {
+    return items?.filter(item => item.title.toLowerCase().includes(search.toLowerCase()))
+  }
+
+  useEffect(() => {
+    if (searchByTitle) setFilteredItems(filterItemsByTitle(items, searchByTitle))
+  }, [items, searchByTitle])
+
   return (
     <ShoppingCartContext.Provider value={{
       counter,
@@ -45,7 +70,12 @@ export const ShoppingCartProvider = ({ children }) => {
       openCheckoutSideMenu,
       closeCheckoutSideMenu,
       order,
-      setOrder
+      setOrder,
+      items,
+      setItems,
+      searchByTitle,
+      setSearchByTitle,
+      filteredItems
     }}>
       { children }
     </ShoppingCartContext.Provider>
