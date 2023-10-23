@@ -16,7 +16,7 @@ export default function MyOrders () {
         order.map((order, index) => (
           <Link to={`/my-orders/${index}`} key={index}>
             <OrdersCard
-              totalPrice={order.totalPrice}
+              totalPrice={order.totalPrice.toFixed(2)}
               productsTotal={order.productsTotal}
             />
           </Link>
