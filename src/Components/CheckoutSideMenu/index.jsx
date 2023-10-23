@@ -11,6 +11,7 @@ export default function CheckoutSideMenu () {
     closeCheckoutSideMenu,
     cartProducts,
     setCartProducts,
+    counter,
     setCounter,
     setOrder
   } = useContext(ShoppingCartContext)
@@ -25,7 +26,7 @@ export default function CheckoutSideMenu () {
     const orderToAdd = {
       date: '01.01.23',
       products: cartProducts,
-      productsTotal: cartProducts.length,
+      productsTotal: counter,
       totalPrice: totalPrice(cartProducts)
     }
     setOrder(prevOrder => ([...prevOrder, orderToAdd]))
