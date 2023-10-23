@@ -1,4 +1,5 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import Layout from '../../Components/Layout'
 import Card from '../../Components/Card'
 import ProductDetail from '../../Components/ProductDetail'
@@ -9,15 +10,29 @@ export default function Home () {
     items,
     searchByTitle,
     setSearchByTitle,
-    filteredItems
+    filteredItems,
+    categoryItems,
+    setCategoryItems,
+    filterItemsByCategory
   } = useContext(ShoppingCartContext)
+
+  const { category: paramsCategory } = useParams()
+  useEffect(() => {
+    if (paramsCategory) filterItemsByCategory(paramsCategory)
+    return () => {
+      setSearchByTitle('')
+      setCategoryItems(null)
+    }
+  }, [paramsCategory])
+
+  const currentItems = paramsCategory ? categoryItems : items
 
   const handleChange = (event) => {
     setSearchByTitle(event.target.value)
   }
 
   const renderview = () => {
-    const itemsToRender = searchByTitle?.length > 0 ? filteredItems : items
+    const itemsToRender = searchByTitle?.length > 0 ? filteredItems : currentItems
 
     if (itemsToRender?.length > 0) {
       return (
@@ -28,7 +43,10 @@ export default function Home () {
     } else {
       return (
         <div className='col-span-4 flex justify-center text-2xl mt-6'>
-          <p>{`Sorry :C ,  we couldn't find anything for "${searchByTitle}"`}</p>
+          { currentItems?.length > 0
+            ? <p>{`Sorry :C ,  we couldn't find anything for "${searchByTitle}"`}</p>
+            : <p>{`Sorry :C ,  we currenty don't have anything in ${paramsCategory}. Consider looking at our other products`}</p>
+          }
         </div>
       )
     }
