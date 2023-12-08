@@ -1,5 +1,5 @@
 import { useRoutes, BrowserRouter } from 'react-router-dom'
-import { ShoppingCartProvider } from '../../Context'
+import { ShoppingCartProvider, initializeLocalStorage } from '../../Context'
 import Home from '../Home'
 import MyAccount from '../MyAccount'
 import MyOrders from '../MyOrders'
@@ -11,6 +11,8 @@ import CheckoutSideMenu from '../../Components/CheckoutSideMenu'
 import './App.css'
 
 const AppRoutes = () => {
+  initializeLocalStorage()
+
   const routes = useRoutes([
     { path: '/', element: <Home /> },
     { path: '/:category', element: <Home /> },

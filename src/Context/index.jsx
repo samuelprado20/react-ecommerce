@@ -3,7 +3,34 @@ import { API_URL } from '../utils/api'
 
 export const ShoppingCartContext = createContext()
 
+export const initializeLocalStorage = () => {
+  const accountInLocalStorage = localStorage.getItem('account')
+  const isSignedinInLocalStorage = localStorage.getItem('signed-in')
+  let parsedAccount
+  let parsedSignOut
+
+  if (!accountInLocalStorage) {
+    localStorage.setItem('account', JSON.stringify({}))
+    parsedAccount = {}
+  } else {
+    parsedAccount = JSON.parse(accountInLocalStorage)
+  }
+
+  if (!isSignedinInLocalStorage) {
+    localStorage.setItem('signed-in', JSON.stringify(false))
+    parsedSignOut = false
+  } else {
+    parsedSignOut = JSON.parse(isSignedinInLocalStorage)
+  }
+}
+
 export const ShoppingCartProvider = ({ children }) => {
+  // Is user signed in
+  const [isUserSignedIn, setIsUserSignedIn] = useState(false)
+
+  // User account
+  const [account, setAccount] = useState({})
+
   // Shopping cart items quantity
   const [counter, setCounter] = useState(0)
 
@@ -39,6 +66,11 @@ export const ShoppingCartProvider = ({ children }) => {
       .then(data => {
         setItems(data)
       })
+    // initialize user account & log in status in global state
+    const isSignedIn = JSON.parse(localStorage.getItem('signed-in'))
+    isSignedIn ? setIsUserSignedIn(true) : setIsUserSignedIn(false)
+    const userAccount = JSON.parse(localStorage.getItem('account'))
+    if (Object.keys(userAccount).length !== 0) setAccount(userAccount)
   }, [])
 
   // Get products by title
@@ -71,6 +103,16 @@ export const ShoppingCartProvider = ({ children }) => {
     setCategoryItems(items?.filter(item => item.category.toLowerCase().includes(realCategory.toLowerCase())))
   }
 
+  const handleLogIn = (action) => {
+    if (action === 'signIn') {
+      setIsUserSignedIn(true)
+      localStorage.setItem('signed-in', true)
+    } else if (action === 'signOut') {
+      setIsUserSignedIn(false)
+      localStorage.setItem('signed-in', false)
+    }
+  }
+
   return (
     <ShoppingCartContext.Provider value={{
       counter,
@@ -95,7 +137,11 @@ export const ShoppingCartProvider = ({ children }) => {
       filteredItems,
       categoryItems,
       setCategoryItems,
-      filterItemsByCategory
+      filterItemsByCategory,
+      isUserSignedIn,
+      handleLogIn,
+      account,
+      setAccount
     }}>
       { children }
     </ShoppingCartContext.Provider>
