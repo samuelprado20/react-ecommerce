@@ -8,19 +8,18 @@ import NotFound from '../NotFound'
 import SignIn from '../SingIn'
 import Navbar from '../../Components/Navbar'
 import CheckoutSideMenu from '../../Components/CheckoutSideMenu'
+import ProtectedRoute from '../../Components/ProtectedRoute'
 import './App.css'
 
 const AppRoutes = () => {
-  initializeLocalStorage()
-
   const routes = useRoutes([
     { path: '/', element: <Home /> },
-    { path: '/:category', element: <Home /> },
-    { path: '/my-account', element: <MyAccount /> },
-    { path: '/my-orders', element: <MyOrders /> },
-    { path: '/my-orders/last', element: <MyOrder /> },
-    { path: '/my-orders/:id', element: <MyOrder /> },
-    { path: '/my-order', element: <MyOrder /> },
+    { path: '/:category', element: <ProtectedRoute><Home /></ProtectedRoute> },
+    { path: '/my-account', element: <ProtectedRoute><MyAccount /></ProtectedRoute> },
+    { path: '/my-orders', element: <ProtectedRoute><MyOrders /></ProtectedRoute> },
+    { path: '/my-orders/last', element: <ProtectedRoute><MyOrder /></ProtectedRoute> },
+    { path: '/my-orders/:id', element: <ProtectedRoute><MyOrder /></ProtectedRoute> },
+    { path: '/my-order', element: <ProtectedRoute><MyOrder /></ProtectedRoute> },
     { path: '/sign-in', element: <SignIn/> },
     { path: '/*', element: <NotFound /> }
   ])
@@ -29,6 +28,8 @@ const AppRoutes = () => {
 }
 
 function App () {
+  initializeLocalStorage()
+
   return (
     <ShoppingCartProvider>
       <BrowserRouter>

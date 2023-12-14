@@ -109,10 +109,10 @@ export default function Navbar () {
         </li>
         <li>
           <NavLink
-            to='/other'
+            to='/jewelery'
             className={({ isActive }) => isRouteActive(isActive)}
           >
-            Other
+            Jewelery
           </NavLink>
         </li>
       </ul>

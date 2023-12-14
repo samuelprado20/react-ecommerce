@@ -95,11 +95,7 @@ export const ShoppingCartProvider = ({ children }) => {
 
   const filterItemsByCategory = (category) => {
     let realCategory = category
-    if (category === 'clothes') {
-      realCategory = 'clothing'
-    } else if (category === 'other') {
-      realCategory = 'jewelery'
-    }
+    if (category === 'clothes') realCategory = 'clothing'
     setCategoryItems(items?.filter(item => item.category.toLowerCase().includes(realCategory.toLowerCase())))
   }
 
